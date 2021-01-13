@@ -2,7 +2,7 @@
 
 function sendMsg()
 {
-console.log("Wouldnt you like to be a pepper too????????");
+console.log("Hello World");
 }
 
 sendMsg();
