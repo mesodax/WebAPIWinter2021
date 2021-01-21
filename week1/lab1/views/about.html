@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static server example using express</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>About</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">Login</a>
+            <a href="contact.html">Add To List</a>
+        </nav>
+        <input type="text" name="message">
+        <button>Create Username</button>
+        <br>
+        <script>
+            
+           
+
+            var ws = new WebSocket('ws://localhost:4000','echo-protocol'),
+            chatlog = document.querySelector('.chatlog'),
+            message = document.querySelector('input[name="message"]')
+        
+            document.querySelector('button').addEventListener('click', function(e){
+              var msg = e.data
+              var index = msg;
+              console.log('received: %s',index);
+            })
+
+            
+        
+            ws.addEventListener('open',function(e){
+              chatlog.insertAdjacentHTML("beforeend", '<br> Access to list')
+            })
+        
+            ws.addEventListener("message", function(e){
+              var msg = e.data
+              var index = msg;
+              console.log("User name", index ,"entered")
+              
+            })
+
+        </script>
+    </div>
+</body>
+
+</html>

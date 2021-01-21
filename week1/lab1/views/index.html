@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static server example using express</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>Welcome to the express static website example server</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">Login</a>
+            <a href="contact.html">Add To List</a>
+        </nav>
+        <img src="images/download.jpg" alt="GANDALF">
+        <div style="width:400px;">
+            <h2>Hello my name is Alvin Wolfgang</h2>
+            <h3><center>List of things I like</center></h3>
+           
+                    <ol type="1">
+                        <center>
+                        <li>Writing</li>
+                        <li>Programming</li>
+                        <li>MMOs</li>
+                        <li>Shooters</li>
+                        <li>Sandbox Video Games</li>
+                        <li>Buffalo Wings (Buffalo Tenders)</li>
+                        <li>Heavy Metal</li>
+                        <li>History</li>
+                        <li>Comedy Movies</li>
+                        <li>Star Wars (The Originals)</li>
+                        <div class = "chatlog"></div>
+                   
+                    </center>
+                    </ol>
+                    <center>
+                    <p>Instructions on clear for "picked the topic", will assume they mean current major. I chose the current major becuase I wanted to try and program for a living and had an interest in it during High School</p>
+                </center>
+        </div>
+    </div>
+
+    <input type="text" name="message">
+
+
+
+    <script>
+        var ws = new WebSocket('ws://localhost:4000','echo-protocol'),
+        chatlog = document.querySelector('.chatlog'),
+        message = document.querySelector('input[name="message"]')
+    
+
+    
+        ws.addEventListener('open',function(e){
+          chatlog.insertAdjacentHTML("beforeend", '<br> Access to list')
+        })
+    
+        ws.addEventListener("message", function(e){
+          var msg = e.data
+          chatlog.insertAdjacentHTML("beforeend", "<br> "+ msg)
+          
+        })
+      </script>
+</body>
+
+
+
+</html>
