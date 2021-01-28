@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCKETIO AAAAAAAAAAAAH</title>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+    <script>
+        var socket = io()
+        var msg = function(){
+            socket.emit('sendBtnMsg', {
+            message: "Stop pushing my buttons"
+        })
+        }
+
+        socket.emit('sendMsg', {
+            message: "G A M E R"
+        })
+
+        socket.on('messageFromServer', function (data) {
+            console.log(data.message)
+        })
+
+    </script>
+</head>
+
+<body>
+    <h1>Welcome to SocketIO server</h1>
+    <br>
+    <button onclick="msg()">Send</button>
+</body>
+
+</html>
