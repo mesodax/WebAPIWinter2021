@@ -10,41 +10,32 @@
 
 <body>
     <div id="container">
-        <h1>About</h1>
+        <h1>Login</h1>
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html">Login</a>
             <a href="contact.html">Add To List</a>
         </nav>
-        <input type="text" name="message">
-        <button>Create Username</button>
+        <h3>Username: admin, Password:password</h3>
+        <input type="text" id="username" name="username"> <br>
+        <input type="text" id="password" name="password">
+        <button>Login</button>
         <br>
         <script>
             
-           
-
-            var ws = new WebSocket('ws://localhost:4000','echo-protocol'),
-            chatlog = document.querySelector('.chatlog'),
-            message = document.querySelector('input[name="message"]')
+            username = document.querySelector('input[name="username"]')
+            password = document.querySelector('input[name="password"]')
         
             document.querySelector('button').addEventListener('click', function(e){
-              var msg = e.data
-              var index = msg;
-              console.log('received: %s',index);
+              console.log(username.value)
+              console.log(password.value)
+              if (username.value == "admin" && password.value == "password")
+              {
+                window.location.href = "index.html";
+              }
             })
-
             
-        
-            ws.addEventListener('open',function(e){
-              chatlog.insertAdjacentHTML("beforeend", '<br> Access to list')
-            })
-        
-            ws.addEventListener("message", function(e){
-              var msg = e.data
-              var index = msg;
-              console.log("User name", index ,"entered")
-              
-            })
+      
 
         </script>
     </div>
