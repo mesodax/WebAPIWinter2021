@@ -13,67 +13,17 @@
     <h1>Welcome to SocketIO server</h1>
     <br>
     <canvas id="canvas" width='800', height='600' style="border:1px solid black"></canvas>
+
+    <div id = "chat-text" style ="width:500px; height:100px; overflow-y: scroll; font-family: Arial, Helvetica, sans-serif">
+        <div>Hello Welcome to Chat</div>
+    </div>
+
+    <form id = "chat-form">
+        <input type="text" name ="chat-input" id="chat-input" style="width:500px">
+    </form>
     <!--button onclick="msg()">Send</button>-->
 
-    <script>
-        var socket = io()
-        var canvas = document.getElementById('canvas')
-        var ctx = canvas.getContext('2d')
-        ctx.font = '30px Arial'
-
-        //event listeners
-        document.addEventListener('keydown', keyPressDown)
-        document.addEventListener('keyup', keyPressUp)
-
-        function keyPressDown(e)
-        {
-            if(e.keyCode===38)//up
-            socket.emit('keypress', {inputId:'up', state:true})
-            if(e.keyCode===40)//down
-            socket.emit('keypress', {inputId:'down', state:true})
-            if(e.keyCode===37)//left
-            socket.emit('keypress', {inputId:'left', state:true})
-            if(e.keyCode===39)//right
-            socket.emit('keypress', {inputId:'right', state:true})
-        }
-
-        function keyPressUp(e)
-        {
-            if(e.keyCode===38)//up
-            socket.emit('keypress', {inputId:'up', state:false})
-            if(e.keyCode===40)//down
-            socket.emit('keypress', {inputId:'down', state:false})
-            if(e.keyCode===37)//left
-            socket.emit('keypress', {inputId:'left', state:false})
-            if(e.keyCode===39)//right
-            socket.emit('keypress', {inputId:'right', state:false})
-        }
-
-        socket.on('newPosition', function(data)
-        {
-            ctx.clearRect(0,0,canvas.width, canvas.height)
-            for(var i = 0; i<data.length;i++)
-            {
-            ctx.fillText(data[i].number, data[i].x, data[i].y)
-            }
-        })
-
-
-        //example code from wednesday
-        // var msg = function(){
-        //     socket.emit('sendBtnMsg', {
-        //     message: "Stop pushing my buttons"
-        // })
-        // }
-
-        // socket.emit('sendMsg', {
-        //     message: "G A M E R"
-        // })
-
-        // socket.on('messageFromServer', function (data) {
-        //     console.log(data.message)
-        // })
-
+    <script src="client/js/game.js">
     </script>
 </body>
 
