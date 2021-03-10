@@ -187,6 +187,17 @@ io.sockets.on('connection', function (socket) {
 
 })
 
+setInterval(function(){
+    var pack =
+    {
+        player:Player.update(),
+    }
+//var pack = Player.update();
+for(var i in SocketList){
+    var socket = SocketList[i]
+    socket.emit('newPosition', pack)
+}
+},1000/30)
 
 app.post('/saveGame',function(req,res){
     console.log("request has been made")

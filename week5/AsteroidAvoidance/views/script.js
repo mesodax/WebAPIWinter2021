@@ -3,11 +3,11 @@ var ctx = c.getContext("2d");
 var timer = requestAnimationFrame(main);
 var gravity = 1;
 var asteroids = new Array();
-var numAsteroids = 10;
-var gameOver = true;
+var numAsteroids = 0;
+var gameOver = false;
 var score = 0;
 var gameStates = [];
-var currentState = 0;
+var currentState = 1;
 var ship;
 var highScore = 0;
 var bgMain = new Image();
@@ -17,6 +17,7 @@ var chatText=document.getElementById('chat-text')
 var chatInput=document.getElementById('chat-input')
 var chatForm=document.getElementById('chat-form')
 var socket = io()
+var gameStarted = false;
 
 bgMain.src = "images/rocks.jpg";
 cookieSprite.src = "images/cookie.png";
@@ -24,6 +25,7 @@ cookieSprite.src = "images/cookie.png";
 //event listener to trigger main when image is loaded
 bgMain.onload = function(){
     main();
+    
 }
 
 cookieSprite.onload = function(){
@@ -136,16 +138,24 @@ function PlayerShip(){
 
 }
 
+
 function gameStart() {
     //for loop to create all instances of asteroids
     for (var i = 0; i < numAsteroids; i++) {
         asteroids[i] = new Asteroids();
     }
     //this creates an instance of the ship
+    socket.on('newPosition', function(data)
+    {
+        PlayerShip.clearRect(0,0,c.width, c.height)
+        PlayerShip.draw
+    })
     ship = new PlayerShip();
 }
 
 
+//gameStart()
+//scoreTimer();
 
 //adding event listeners
 document.addEventListener("keydown", keyPressDown);
@@ -155,31 +165,52 @@ function keyPressUp(e){
   //  console.log("Key released " + e.keyCode);
     if(gameOver == false){
         if(e.keyCode === 38){
-            ship.up = false;
+            //ship.up = false;
+            socket.emit('keypress', {inputId:'up', state:true})
         }
         if(e.keyCode === 37){
-            ship.left = false;
+            //ship.left = false;
+            socket.emit('keypress', {inputId:'left', state:true})
         }
         if(e.keyCode === 39){
-            ship.right = false;
+            //ship.right = false;
+            socket.emit('keypress', {inputId:'right', state:true})
         }
     }
     
 }
 
+
 function keyPressDown(e){
-    //console.log("Key pressed " + e.keyCode);
+    console.log("Key pressed " + e.keyCode);
     if(gameOver == false){
+        if (gameStarted == false)
+         {
+            if (e.keyCode === 13)
+            {
+                gameStart();
+                gameOver = false;
+                gameStarted = true;
+                currentState = 1;
+                main();
+                scoreTimer();
+                console.log("game started");
+            }
+         }
         if(e.keyCode === 38){
-            ship.up = true;
+            //ship.up = true;
+            socket.emit('keypress', {inputId:'up', state:false})
         }
 
         if(e.keyCode === 37){
-            ship.left = true;
+            //ship.left = true;
+            socket.emit('keypress', {inputId:'left', state:false})
         }
         if(e.keyCode === 39){
-            ship.right = true;
+            //ship.right = true;
+            socket.emit('keypress', {inputId:'right', state:false})
         }
+        
     }
     if (gameOver == true) {
         if (e.keyCode === 13) {
@@ -202,9 +233,11 @@ function keyPressDown(e){
             
         }
     }
+    
 }
 
 //GameStates state machine. This is what sets up menu screens and main agme scene
+
 
 //---Main Menu---
 gameStates[0] = function(){
@@ -228,27 +261,28 @@ gameStates[1] = function(){
     ctx.fillStyle = 'white';
     ctx.fillText("Score: " + score.toString(), c.width - 150, 30);
     ctx.restore();
+ 
     
 
     //ship.vy += gravity;
 
     //Key presses move the ship
-    if(ship.up == true){
-        ship.vy = -10;
-    }
-    else{
-        ship.vy = 3;
-    }
+    // if(ship.up == true){
+    //     ship.vy = -10;
+    // }
+    // else{
+    //     ship.vy = 3;
+    // }
 
-    if(ship.left == true){
-        ship.vx = -3;
-    }
-    else if(ship.right == true){
-        ship.vx = 3;
-    }
-    else{
-        ship.vx = 0;
-    }
+    // if(ship.left == true){
+    //     ship.vx = -3;
+    // }
+    // else if(ship.right == true){
+    //     ship.vx = 3;
+    // }
+    // else{
+    //     ship.vx = 0;
+    // }
     // loops through asteroid instances in array and draws them to the screen
     for(var i = 0; i<asteroids.length; i++){
         var dX = ship.x - asteroids[i].x;
@@ -259,8 +293,8 @@ gameStates[1] = function(){
         if(detectCollision(dist, (ship.h/2 + asteroids[i].radius))){
            // console.log("Colliding with asteroid " + i);
             
-            currentState = 2;
-            gameOver = true;
+           // currentState = 2;
+           // gameOver = true;
             //document.removeEventListener("keydown", keyPressDown);
             //document.removeEventListener("keyup", keyPressUp);
         }
@@ -327,10 +361,25 @@ function main() {
    
     if (gameOver == false) {
         timer = requestAnimationFrame(main);
+        
     }
     gameStates[currentState]();
 }
-
+//Starts game on the startup
+function startGame()
+{
+if (gameStarted == false)
+         {
+                gameStart();
+                gameOver = false;
+                gameStarted = true;
+                currentState = 1;
+                main();
+                scoreTimer();
+                console.log("game started");
+         }
+}
+startGame();
 
 //---Collision Detection Function---
 function detectCollision(distance, calcDistance){
