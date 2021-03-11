@@ -8,11 +8,6 @@ function randomRange(high, low) {
 }
 
 
-
-
-
-
-//Game related code====================================
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d')
 var chatText = document.getElementById('chat-text')
@@ -348,7 +343,6 @@ chatForm.onsubmit = function (e) {
     } else {
         socket.emit('sendMessageToServer', chatInput.value)
     }
-    //clear out the input field
     chatInput.value = ""
 }
 
