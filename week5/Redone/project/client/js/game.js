@@ -1,13 +1,5 @@
 var socket = io()
 
-//Sign in related client code==========================
-var signDiv = document.getElementById('signInDiv')
-var signDivUsername = document.getElementById('signInDiv-username')
-var signDivSignIn = document.getElementById('signInDiv-signIn')
-var signDivSignUp = document.getElementById('signInDiv-signUp')
-var signDivPassword = document.getElementById('signInDiv-password')
-var gameDiv = document.getElementById('gameDiv')
-var error = document.getElementById('err')
 
 
 
@@ -15,35 +7,8 @@ function randomRange(high, low) {
     return Math.random() * (high - low) + low;
 }
 
-//add event listeners for sign in buttons
-signDivSignIn.onclick = function () {
-    socket.emit('signIn', { username: signDivUsername.value, password: signDivPassword.value })
-}
-signDivSignUp.onclick = function () {
-    socket.emit('signUp', { username: signDivUsername.value, password: signDivPassword.value })
-}
 
-socket.on('signInResponse', function (data) {
-    if (data.success) {
-        //log user in
-        signDiv.style.display = "none"
-        gameDiv.style.display = "inline-block"
-    } else {
-        //alert("Sign in Unsuccessful")
-        error.innerHTML = "Sign in Unsuccessful"
-    }
 
-})
-
-socket.on('signUpResponse', function (data) {
-    if (data.success) {
-        error.innerHTML = "Sign Up Success Please Login"
-    } else {
-
-        error.innerHTML = "Sign up Unsuccessful"
-    }
-
-})
 
 
 
@@ -60,7 +25,7 @@ ctx.font = '30px Arial'
 
 var Sprites = {}
 Sprites.fireball = new Image()
-Sprites.fireball.src = '/client/images/Fireball.png'
+Sprites.fireball.src = '/client/images/bomb.png'
 Sprites.cookieSprite = new Image();
 Sprites.cookieSprite.src = "/client/images/cookie.png";
 
@@ -151,6 +116,9 @@ var Bullet = function (initPack) {
     self.draw = function () {
       
         ctx.drawImage(Sprites.fireball, self.x - 5, self.y - 5, 15, 10)
+
+
+        
     }
 
     Bullet.list[self.id] = self
